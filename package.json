@@ -1,0 +1,16 @@
+{
+  "name": "projekt-frontend-vera",
+  "version": "1.0.0",
+  "description": "Projekt i frontend-baserad webbutveckling",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build"
+  },
+  "browserlist": "> 0.5%, last versions, not dead",
+  "author": "Vera Kippel",
+  "license": "ISC",
+  "devDependencies": {
+    "parcel": "^2.13.3"
+  }
+}
