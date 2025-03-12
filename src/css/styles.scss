@@ -1,0 +1,31 @@
+$background-color: #F4EDD3;
+$font-color: #7E99A3;
+
+*{
+    line-height: 1.5;
+}
+body{
+    background-color: lighten($background-color, 5%);
+}
+@mixin logo($logoWidth){
+    width: $logoWidth;
+    height: auto;
+    margin: 1 auto;
+}
+
+@media (min-width: 1200px){
+    .headlogo{
+        @include logo($logoWidth: 300px);
+    }
+}
+@media (min-width: 801px) and (max-width: 1199px){
+    .headlogo{
+        @include logo($logoWidth: 200px);
+    }
+}
+@media (min-width: 300px) and (max-width: 800px){
+    .headlogo{
+        @include logo($logoWidth: 150px);
+        height: 100px;
+    }
+}
