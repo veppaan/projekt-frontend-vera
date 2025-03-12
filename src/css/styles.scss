@@ -6,26 +6,62 @@ $font-color: #7E99A3;
 }
 body{
     background-color: lighten($background-color, 5%);
+    color: darken($font-color, 30%);
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
 }
 @mixin logo($logoWidth){
     width: $logoWidth;
     height: auto;
     margin: 1 auto;
 }
+p{
+    font-size: 1em;
+}
+#water{
+    width: 15em;
+    height: 4em;
+    border: 2px solid #ddd;
+    padding: 1em;
+    border-radius: 8px;
+}
+#section-option{
+    width: 15em;
+    margin: 1 auto;
+    option{
+        color:#7E99A3
+    }
+}
 
 @media (min-width: 1200px){
     .headlogo{
         @include logo($logoWidth: 300px);
+    }
+    .start-text{
+        padding-top: 2em;
+        margin: 1 auto;
     }
 }
 @media (min-width: 801px) and (max-width: 1199px){
     .headlogo{
         @include logo($logoWidth: 200px);
     }
+    .start-text{
+        padding-top: 2em;
+        margin: 1 auto;
+    }
 }
 @media (min-width: 300px) and (max-width: 800px){
     .headlogo{
         @include logo($logoWidth: 150px);
         height: 100px;
+    }
+    .start-text{
+        padding-top: 5em;
+        margin: 1 auto;
+        text-align: center;
+        width: 50ch;
+        h1{
+            font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+        }
     }
 }
