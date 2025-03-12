@@ -55,7 +55,7 @@ async function writeWaters(waters, ids){
         }
     }
     //Gör nya objekt för bara namn och id för att lättare hålla reda på vad som finns i objekt
-    const stations = waters.map((name, i) => ({
+    const stations = workingNames.map((name, i) => ({
         name: name,
         id: ids[i],
       }));
