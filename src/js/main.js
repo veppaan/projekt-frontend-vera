@@ -98,13 +98,20 @@ function showWater(name, id){
         return response.json(); // Omvandla till json
     })
     .then(data => {
-        console.log(data); // Loggar ut hela dataobjektet för att inspektera
         //Temperatur ligger under value.value så jag tar första arrayen (senaste hämtningen)
         if (data && data.value) {
             let waterResultEl = document.getElementById("water-result");
             waterResultEl.innerHTML="";
             waterResultEl.innerHTML=`Temperaturen i vattnet från station ${name} är: ${data.value[0].value} °C`;
-          } 
+
+            const chosenLatitude = data.position[0].latitude;
+            const chosenLongitude = data.position[0].longitude;
+
+            console.log(chosenLatitude);
+            console.log(chosenLongitude);
+          }else{
+            waterResultEl.innerHTML=`Temperaturen i vattnet från station ${name} gick inte att hämta...`;
+          }
     })
     .catch(error => {
         //Fångar upp fel
