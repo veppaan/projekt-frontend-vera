@@ -32,11 +32,8 @@ function getStations(){
 async function writeWaters(waters, ids){
     //console.log(waters);
     //console.log(ids);
-    let workingIds = [];
     let workingNames = [];
     let watersEl = document.getElementById("water");
-    //const url= `https://opendata-download-ocobs.smhi.se/api/version/latest/parameter/5/station/${id}/period/latest-day/data.json`;
-    //let data = await tryUrl(id);
     
     //Loopar igenom alla idn för att kunna ta bort alla ogiltiga
     for (let i = 0; i <= ids.length; i++){
@@ -107,8 +104,7 @@ function showWater(name, id){
             const chosenLatitude = data.position[0].latitude;
             const chosenLongitude = data.position[0].longitude;
 
-            console.log(chosenLatitude);
-            console.log(chosenLongitude);
+            initMap(chosenLatitude, chosenLongitude);
           }else{
             waterResultEl.innerHTML=`Temperaturen i vattnet från station ${name} gick inte att hämta...`;
           }
@@ -116,5 +112,16 @@ function showWater(name, id){
     .catch(error => {
         //Fångar upp fel
         console.error('Fel vid hämtning av data:', error);
+    });
+}
+
+async function initMap(latitude, longitude){
+    let map;
+
+    const { Map } = await google.maps.importLibrary("maps");
+
+    map = new Map(document.getElementById("map"), {
+        center: { lat: latitude, lng: longitude},
+        zoom: 8,
     });
 }
