@@ -59,19 +59,14 @@ async function writeWaters(waters, ids){
         name: name,
         id: ids[i],
       }));
-      //Kolla så att idn och namn stämmer
-      console.log(stations[0]);
-      console.log(waters[0]);
-      console.log(ids[0]);
       //Eventlyssnare lyssnar på "change" för att kunna ta ut värden från den avlda
     watersEl.addEventListener('change', function(event) {
         const chosenName = event.target.value;
         
         // Hitta objekt ur stations för att matcha namn och id
-        const selectedStation = stations.find(station => station.name === chosenName);
-        //const selectedPosition = stations.find(position => position.latitude === selectedName);
-      
-
+        const chosenStation = stations.find(station => station.name === chosenName);
+        console.log(chosenStation.name);
+        console.log(chosenStation.id)
       });
 }
 
