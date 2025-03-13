@@ -49,7 +49,7 @@ async function writeWaters(waters, ids){
                 workingNames.push(waters[i]);
             
         }else{
-            console.log("Skippar länkar som inte fungerar")
+            console.log("Skippar länk som inte fungerar")
         }
     }
     //Gör nya objekt för bara namn och id för att lättare hålla reda på vad som finns i objekt
@@ -72,7 +72,6 @@ async function writeWaters(waters, ids){
 async function tryUrl(id){
     const url= `https://opendata-download-ocobs.smhi.se/api/version/latest/parameter/5/station/${id}/period/latest-day/data.json`
     try{
-        console.log("kollar id");
     let response = await fetch(url);
         // Kollar om responsen är ok
         if (!response.ok) {
@@ -85,9 +84,10 @@ async function tryUrl(id){
     }
 }
 //Hämtar ny url och skriver ut vattentemperaturen
-function showWater(name, id){
+async function showWater(name, id){
+    let url = `https://opendata-download-ocobs.smhi.se/api/version/latest/parameter/5/station/${id}/period/latest-day/data.json`;
     //Hämtar url med det unika id:t från vald station
-    fetch(`https://opendata-download-ocobs.smhi.se/api/version/latest/parameter/5/station/${id}/period/latest-day/data.json`)
+     await fetch(url)
     .then(response => {
         // Kollar om responsen är ok
         if (!response.ok) {
@@ -134,8 +134,8 @@ async function startMap(){
         });
 }
 let map;
+let marker;
 async function initMap(latitude, longitude, name){
-    let marker;
 
     const { Map } = await google.maps.importLibrary("maps");
     const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
@@ -152,10 +152,9 @@ async function initMap(latitude, longitude, name){
     });
 }
 
-
+let chart;
 function showChart(data){
 
-    
     let onlyTemp = [];
     let onlyDate = []
     let array = data.value;
@@ -168,8 +167,10 @@ function showChart(data){
             onlyDate.push(data.value[i].date);
     }
     console.log(onlyDate);
+    console.log(onlyTemp);
 
-    let options = {
+if(!chart){
+    chart = new ApexCharts(document.querySelector("#chart"), {
         series: [{
         name: 'Havstemperatur',
         data: onlyTemp
@@ -193,10 +194,16 @@ function showChart(data){
           format: 'dd/MM/yy HH:mm'
         },
       },
-      };
+      });
 
-      let chart = new ApexCharts(document.querySelector("#chart"), options);
+      
       chart.render();
-    
+}
+
+//Uppdaterar båda arrayerna vid byte av station (de hängde inte med och använde gammal data) 
+chart.updateSeries([{
+    data: onlyTemp,
+    categories: onlyDate
+}]);
     
 }
