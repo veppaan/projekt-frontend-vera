@@ -65,8 +65,8 @@ async function writeWaters(waters, ids){
         
         // Hitta objekt ur stations för att matcha namn och id
         const chosenStation = stations.find(station => station.name === chosenName);
-        console.log(chosenStation.name);
-        console.log(chosenStation.id)
+        //Anropar ny funktion med valt namn och id som ska visa dess temperatur
+        showWater(chosenStation.name, chosenStation.id); 
       });
 }
 
@@ -85,4 +85,27 @@ async function tryUrl(id){
     }catch(error){
         return false;
     }
+}
+//Hämtar ny url och skriver ut vattentemperaturen
+function showWater(name, id){
+    //Hämtar url med det unika id:t från vald station
+    fetch(`https://opendata-download-ocobs.smhi.se/api/version/latest/parameter/5/station/${id}/period/latest-day/data.json`)
+    .then(response => {
+        // Kollar om responsen är ok
+        if (!response.ok) {
+            throw new Error('Något gick fel med förfrågan');
+        }
+        return response.json(); // Omvandla till json
+    })
+    .then(data => {
+        console.log(data); // Loggar ut hela dataobjektet för att inspektera
+        //Temperatur ligger under value.value så jag tar första arrayen (senaste hämtningen)
+        if (data && data.value) {
+            console.log(`Temperaturen i vattnet från station ${name} är: ${data.value[0].value} °C`);
+          } 
+    })
+    .catch(error => {
+        //Fångar upp fel
+        console.error('Fel vid hämtning av data:', error);
+    });
 }
