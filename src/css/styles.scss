@@ -31,9 +31,14 @@ p{
         color:#7E99A3
     }
 }
+@mixin map($mapH, $mapW){
+    height: $mapH;
+    width: $mapW;
+}
 #map{
     height: 650px;
     width: 700px;
+    border-radius: 30px;
 }
 
 @media (min-width: 1200px){

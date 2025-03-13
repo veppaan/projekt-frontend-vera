@@ -106,6 +106,7 @@ function showWater(name, id){
             const chosenLongitude = data.position[0].longitude;
 
             initMap(chosenLatitude, chosenLongitude, name);
+            showChart(data);
           }else{
             waterResultEl.innerHTML=`Temperaturen i vattnet från station ${name} gick inte att hämta...`;
           }
@@ -143,4 +144,56 @@ async function initMap(latitude, longitude, name){
         position: { lat: latitude, lng: longitude },
         title: name
     });
+}
+
+
+function showChart(data){
+    let onlyTemp = [];
+    let onlyDate = []
+    let array = data.value;
+    console.log(data.value);
+
+    const arrayLength = Math.min(10, array.length); //Tar ut 10 eller längden på arrayen om den innehåller mindre
+    console.log(arrayLength);
+
+    for(let i =0; i < arrayLength; i++){
+        onlyTemp.push(data.value[i].value);
+        onlyDate.push(data.value[i].date)
+    }
+    console.log(onlyDate);
+    const dates = onlyDate.map(time =>{
+        const d = new Date(time);
+        return d.toLocaleTimeString();
+    })
+    console.log(dates);
+    var options = {
+        series: [{
+        name: 'Havstemperatur',
+        data: onlyTemp
+      }],
+        chart: {
+        height: 350,
+        type: 'area'
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'smooth'
+      },
+      xaxis: {
+        type: 'datetime',
+        categories: onlyDate
+      },
+      tooltip: {
+        x: {
+          format: 'HH:mm:ss'
+        },
+      },
+      };
+
+      var chart = new ApexCharts(document.querySelector("#chart"), options);
+      chart.render();
+    
+    
 }
