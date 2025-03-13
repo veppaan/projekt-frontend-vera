@@ -103,7 +103,7 @@ function showWater(name, id){
             //senaste resultatet
             const latestValue = data.value[data.value.length -1];
             console.log(latestValue);
-            waterResultEl.innerHTML=`Temperaturen i vattnet från station ${name} är: ${latestValue.value} °C`;
+            waterResultEl.innerHTML=`Havstemperaturen i vattnet från station ${name} just nu är: ${latestValue.value} °C`;
 
             const chosenLatitude = data.position[0].latitude;
             const chosenLongitude = data.position[0].longitude;
