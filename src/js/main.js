@@ -168,7 +168,10 @@ function showChart(data){
     }
     console.log(onlyDate);
     console.log(onlyTemp);
+    let xPoints = onlyDate.length;
+    console.log(xPoints);
 
+if(!chart){
     chart = new ApexCharts(document.querySelector("#chart"), {
         series: [{
         name: 'Havstemperatur',
@@ -188,6 +191,9 @@ function showChart(data){
         type: 'datetime',
         categories: onlyDate
       },
+      markers:{
+        size: 6,
+      },
       tooltip: {
         x: {
           format: 'dd/MM/yy HH:mm'
@@ -195,12 +201,19 @@ function showChart(data){
       },
       });
       chart.render();
-
+}
 
 //Uppdaterar båda arrayerna vid byte av station (de hängde inte med och använde gammal data) 
 chart.updateSeries([{
     data: onlyTemp,
     categories: onlyDate
 }]);
+chart.updateOptions({
+    xaxis:{
+        categories: onlyDate,
+        tickAmount: onlyDate.length
+    }
+})
+
     
 }
