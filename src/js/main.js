@@ -151,6 +151,8 @@ async function initMap(latitude, longitude, name){
 
 
 function showChart(data){
+
+    
     let onlyTemp = [];
     let onlyDate = []
     let array = data.value;
@@ -164,7 +166,7 @@ function showChart(data){
     }
     console.log(onlyDate);
 
-    var options = {
+    let options = {
         series: [{
         name: 'Havstemperatur',
         data: onlyTemp
@@ -190,7 +192,7 @@ function showChart(data){
       },
       };
 
-      var chart = new ApexCharts(document.querySelector("#chart"), options);
+      let chart = new ApexCharts(document.querySelector("#chart"), options);
       chart.render();
     
     
