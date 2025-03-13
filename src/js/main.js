@@ -99,11 +99,13 @@ function showWater(name, id){
         //Temperatur ligger under value.value så jag tar första arrayen (senaste hämtningen)
         if (data && data.value) {
             let waterResultEl = document.getElementById("water-result");
+            let waveDegreeEl = document.querySelector(".degree");
             waterResultEl.innerHTML="";
             //senaste resultatet
             const latestValue = data.value[data.value.length -1];
             console.log(latestValue);
             waterResultEl.innerHTML=`Havstemperaturen i vattnet från station ${name} just nu är: ${latestValue.value} °C`;
+            waveDegreeEl.textContent=`${latestValue.value} °C`; //Enda funktionen som inte tar bort animeringen
 
             const chosenLatitude = data.position[0].latitude;
             const chosenLongitude = data.position[0].longitude;
