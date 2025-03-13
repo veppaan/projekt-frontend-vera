@@ -104,7 +104,7 @@ function showWater(name, id){
             const chosenLatitude = data.position[0].latitude;
             const chosenLongitude = data.position[0].longitude;
 
-            initMap(chosenLatitude, chosenLongitude);
+            initMap(chosenLatitude, chosenLongitude, name);
           }else{
             waterResultEl.innerHTML=`Temperaturen i vattnet från station ${name} gick inte att hämta...`;
           }
@@ -115,13 +115,21 @@ function showWater(name, id){
     });
 }
 
-async function initMap(latitude, longitude){
+async function initMap(latitude, longitude, name){
     let map;
+    let marker;
 
     const { Map } = await google.maps.importLibrary("maps");
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
 
     map = new Map(document.getElementById("map"), {
         center: { lat: latitude, lng: longitude},
-        zoom: 8,
+        zoom: 11,
+        mapId: "29dd997073953c33",
+    });
+    marker = new AdvancedMarkerElement({
+        map,
+        position: { lat: latitude, lng: longitude },
+        title: name
     });
 }
