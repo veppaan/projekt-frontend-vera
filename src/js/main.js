@@ -2,9 +2,10 @@
 
 window.onload = () =>{
     getStations();
+    startMap();
 }
 
-function getStations(){
+async function getStations(){
     //Hämtar url med alla vatten-stationer
     fetch(`https://opendata-download-ocobs.smhi.se/api/version/latest/parameter/5.json`)
     .then(response => {
@@ -21,7 +22,7 @@ function getStations(){
         const myLatitude = data.station.map(station => station.latitude);
         const myLongitude = data.station.map(station => station.longitude);
         //Anropar utskrift med variabler till select
-        writeWaters(myName, myId, myLatitude, myLongitude)
+        writeWaters(myName, myId, myLatitude, myLongitude);
     })
     .catch(error => {
         console.error('Fel vid hämtning av stationer:', error);
@@ -114,9 +115,19 @@ function showWater(name, id){
         console.error('Fel vid hämtning av data:', error);
     });
 }
-
+async function startMap(){
+        const latitude = 62.915;
+        const longitude = 17.380;
+    
+        const { Map } = await google.maps.importLibrary("maps");
+    
+        map = new Map(document.getElementById("map"), {
+            center: { lat: latitude, lng: longitude},
+            zoom: 5,
+        });
+}
+let map;
 async function initMap(latitude, longitude, name){
-    let map;
     let marker;
 
     const { Map } = await google.maps.importLibrary("maps");
