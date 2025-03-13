@@ -100,11 +100,12 @@ function showWater(name, id){
         if (data && data.value) {
             let waterResultEl = document.getElementById("water-result");
             let waveDegreeEl = document.querySelector(".degree");
+            let allResultEL = document.getElementById("all-result");
             waterResultEl.innerHTML="";
             //senaste resultatet
             const latestValue = data.value[data.value.length -1];
-            console.log(latestValue);
-            waterResultEl.innerHTML=`Havstemperaturen i vattnet från station ${name} just nu är: ${latestValue.value} °C`;
+            allResultEL.style.display = "block";
+            waterResultEl.innerHTML=`Havstemperaturen vid station ${name} är just nu:`;
             waveDegreeEl.textContent=`${latestValue.value} °C`; //Enda funktionen som inte tar bort animeringen
 
             const chosenLatitude = data.position[0].latitude;

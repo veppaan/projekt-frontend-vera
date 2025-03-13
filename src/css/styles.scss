@@ -14,24 +14,27 @@ body{
     height: auto;
     margin: 1 auto;
 }
-.container{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 20vh;
-    position: relative;
-    .water-wave{
-        width: 150px;
-        height: 150px;
-        background-color: #35b2e7;
-        border-radius: 50%;
-        box-shadow: inset 0 0 10px 0 rgba(0,0,0,0.5), 0 0 20px 0 rgba(0,0,0,0.2);
-        position: relative;
-        overflow: hidden;
-        z-index: 1;
+#all-result{
+    display: none;
+    .container{
         display: flex;
-        justify-content: center;
         align-items: center;
+        justify-content: center;
+        min-height: 20vh;
+        position: relative;
+        .water-wave{
+            width: 150px;
+            height: 150px;
+            background-color: #35b2e7;
+            border-radius: 50%;
+            box-shadow: inset 0 0 10px 0 rgba(0,0,0,0.5), 0 0 20px 0 rgba(0,0,0,0.2);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
     }
 }
 .water-wave:after,
@@ -91,6 +94,7 @@ p{
 #section-option{
     width: 15em;
     margin: 1 auto;
+    padding: 1.2em 0em;
     option{
         color:#7E99A3
     }
