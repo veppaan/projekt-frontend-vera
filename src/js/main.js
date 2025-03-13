@@ -101,7 +101,9 @@ function showWater(name, id){
         console.log(data); // Loggar ut hela dataobjektet för att inspektera
         //Temperatur ligger under value.value så jag tar första arrayen (senaste hämtningen)
         if (data && data.value) {
-            console.log(`Temperaturen i vattnet från station ${name} är: ${data.value[0].value} °C`);
+            let waterResultEl = document.getElementById("water-result");
+            waterResultEl.innerHTML="";
+            waterResultEl.innerHTML=`Temperaturen i vattnet från station ${name} är: ${data.value[0].value} °C`;
           } 
     })
     .catch(error => {
