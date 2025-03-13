@@ -100,7 +100,10 @@ function showWater(name, id){
         if (data && data.value) {
             let waterResultEl = document.getElementById("water-result");
             waterResultEl.innerHTML="";
-            waterResultEl.innerHTML=`Temperaturen i vattnet från station ${name} är: ${data.value[0].value} °C`;
+            //senaste resultatet
+            const latestValue = data.value[data.value.length -1];
+            console.log(latestValue);
+            waterResultEl.innerHTML=`Temperaturen i vattnet från station ${name} är: ${latestValue.value} °C`;
 
             const chosenLatitude = data.position[0].latitude;
             const chosenLongitude = data.position[0].longitude;
@@ -154,18 +157,13 @@ function showChart(data){
     console.log(data.value);
 
     const arrayLength = Math.min(10, array.length); //Tar ut 10 eller längden på arrayen om den innehåller mindre
-    console.log(arrayLength);
 
-    for(let i =0; i < arrayLength; i++){
-        onlyTemp.push(data.value[i].value);
-        onlyDate.push(data.value[i].date)
+    for(let i = array.length - 1; i >= array.length - arrayLength; i--){
+            onlyTemp.push(data.value[i].value);
+            onlyDate.push(data.value[i].date);
     }
     console.log(onlyDate);
-    const dates = onlyDate.map(time =>{
-        const d = new Date(time);
-        return d.toLocaleTimeString();
-    })
-    console.log(dates);
+
     var options = {
         series: [{
         name: 'Havstemperatur',
@@ -187,7 +185,7 @@ function showChart(data){
       },
       tooltip: {
         x: {
-          format: 'HH:mm:ss'
+          format: 'dd/MM/yy HH:mm'
         },
       },
       };
