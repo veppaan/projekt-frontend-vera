@@ -169,7 +169,6 @@ function showChart(data){
     console.log(onlyDate);
     console.log(onlyTemp);
 
-if(!chart){
     chart = new ApexCharts(document.querySelector("#chart"), {
         series: [{
         name: 'Havstemperatur',
@@ -195,10 +194,8 @@ if(!chart){
         },
       },
       });
-
-      
       chart.render();
-}
+
 
 //Uppdaterar båda arrayerna vid byte av station (de hängde inte med och använde gammal data) 
 chart.updateSeries([{
