@@ -101,10 +101,12 @@ async function showWater(name, id){
             let waterResultEl = document.getElementById("water-result");
             let waveDegreeEl = document.querySelector(".degree");
             let allResultEL = document.getElementById("all-result");
+            let chooseStationEl = document.getElementById("small-text");
             waterResultEl.innerHTML="";
             //senaste resultatet
             const latestValue = data.value[data.value.length -1];
             allResultEL.style.display = "block";
+            chooseStationEl.style.display = "none";
             waterResultEl.innerHTML=`Havstemperaturen vid station ${name} är vid senaste mätningen:`;
             waveDegreeEl.textContent=`${latestValue.value} °C`; //Enda funktionen som inte tar bort animeringen
 
@@ -180,18 +182,20 @@ if(!chart){
         chart: {
         width: "100%",
         type: 'area',
-        title: {
-            text: "Senaste temperaturmätningarna från vald station",
-            align: "center",
-            style:{
-                fontSize: "24px",
-                fontFamily: "Verdana, Geneva, Tahoma, sans-serif"
-            }
-        },
         zoom:{
             enabled: false
           }
       },
+      title: {
+        text: "Senaste temperaturmätningarna från vald station",
+        align: "center",
+        style:{
+            fontSize: "14px",
+            fontWeight: "600",
+            color: "#324c56",
+            fontFamily: "Verdana, Geneva, Tahoma, sans-serif"
+        }
+    },
       dataLabels: {
         enabled: false
       },
@@ -219,7 +223,7 @@ chart.updateSeries([{
     data: onlyTemp,
     categories: onlyDate
 }]);
-//Uppdaterar även diagramets x-axel för att datan ska bli korrekt på sidan
+//Uppdaterar även diagrammets x-axel för att datan ska bli korrekt på sidan
 chart.updateOptions({
     xaxis:{
         categories: onlyDate,

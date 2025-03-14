@@ -12,6 +12,12 @@ body{
 h1{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
+h2{
+    color: darken($font-color, 30%);
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1em;
+    font-weight: 600;
+}
 footer{
     p{
         font-size: 0.8em;
@@ -21,6 +27,12 @@ footer{
 #small-text{
     font-size: 0.9em;
     color: #d9561e;
+    display: block;
+}
+#info-data{
+    font-size: 0.6em;
+    max-width: 40ch;
+    text-align: center;
 }
 @mixin logo($logoWidth){
     width: $logoWidth;
@@ -118,6 +130,9 @@ p{
     justify-content: center;
     align-items: center;
 }
+.info{
+    @include flex();
+}
 
 
 @media (min-width: 1200px){
@@ -147,8 +162,10 @@ p{
         display: flex;
         justify-content: center;
         align-items: center;
-        column-gap: 2em;
-        margin: 2em 0em;
+        column-gap: 1em;
+        #chart{
+            width: 600px;
+        }
     }
     #water-result{
         @include flex();
@@ -185,6 +202,10 @@ p{
         justify-content: center;
         align-items: center;
         row-gap: 1em;
+        #chart{
+            margin: 1 auto;
+            width: 600px;
+        }
     }
     
 }
