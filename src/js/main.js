@@ -184,7 +184,10 @@ if(!chart){
         type: 'area',
         zoom:{
             enabled: false
-          }
+          },
+          toolbar:{
+            show: false
+          },
       },
       title: {
         text: "Senaste temperaturmätningarna från vald station",
