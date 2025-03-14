@@ -35,6 +35,8 @@ async function writeWaters(waters, ids){
     //console.log(ids);
     let workingNames = [];
     let watersEl = document.getElementById("water");
+    let loadingEl = document.querySelector(".loading-elements");
+    let optionsEl = document.querySelector("#section-option");
     
     //Loopar igenom alla idn för att kunna ta bort alla ogiltiga
     for (let i = 0; i <= ids.length; i++){
@@ -50,6 +52,14 @@ async function writeWaters(waters, ids){
             
         }else{
             console.log("Skippar länk som inte fungerar")
+        }
+        //Kollar om loopen är klar så att laddings-animering slutar och listan med stationer visas
+        if( i === ids.length -1){
+            loadingEl.style.display = 'none';
+            optionsEl.style.display = 'block'; 
+            setTimeout(() => {
+                optionsEl.style.opacity = '1';
+            }, 10); //Mjuk övergång i 1s till att den syns
         }
     }
     //Gör nya objekt för bara namn och id för att lättare hålla reda på vad som finns i objekt
