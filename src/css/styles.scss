@@ -133,6 +133,10 @@ p{
 .info{
     @include flex();
 }
+.all-map{
+    @include flex();
+    flex-direction: column;
+}
 
 
 @media (min-width: 1200px){
@@ -163,8 +167,10 @@ p{
         justify-content: center;
         align-items: center;
         column-gap: 1em;
-        #chart{
-            width: 600px;
+        if #chart{
+            #chart{
+                width: 600px;
+            }
         }
     }
     #water-result{
