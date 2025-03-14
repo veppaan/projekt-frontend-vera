@@ -39,59 +39,6 @@ footer{
     height: auto;
     margin: 1 auto;
 }
-#all-result{
-    display: none;
-    .container{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        min-height: 20vh;
-        position: relative;
-        .water-wave{
-            background-color: #35b2e7;
-            border-radius: 50%;
-            box-shadow: inset 0 0 10px 0 rgba(0,0,0,0.5), 0 0 20px 0 rgba(0,0,0,0.2);
-            position: relative;
-            overflow: hidden;
-            z-index: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-    }
-}
-.water-wave:after,
-.water-wave:before{
-    content: "";
-    position: absolute;
-    width: 200%;
-    height: 200%;
-    top: -50%;
-    left: 50%;
-    background: #fff;
-}
-.water-wave:after{
-    border-radius: 45%;
-    animation: water-wave 10s linear infinite;
-}
-.water-wave:before{
-    border-radius: 35%;
-    background: rgba(255, 255, 255, 0.3);
-    animation: water-wave 10s linear infinite;
-}
-@keyframes water-wave{
-    0%{
-        transform: translate(-50%, -60%) rotate(0deg);
-        top: -30%;
-    }
-    50%{
-        top: -50%;
-    }
-    100%{
-        transform: translate(-50%, -60%) rotate(360deg);
-        top: -30%;
-    }
-}
 .degree{
     position: absolute;
     color: darken(#ffbda1, 5%);
@@ -273,5 +220,8 @@ p{
             margin: 1 auto;
             width: 90vw;
         }
+    }
+    .apexcharts-title-text{
+        font-size: 12px;
     }
 }

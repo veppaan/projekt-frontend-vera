@@ -217,7 +217,6 @@ if(!chart){
       });
       chart.render();
 }
-
 //Uppdaterar båda arrayerna vid byte av station (de hängde inte med och använde gammal data) 
 chart.updateSeries([{
     data: onlyTemp,
