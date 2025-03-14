@@ -51,3 +51,27 @@
         top: -30%;
     }
 }
+.loading-elements{
+    display: block;
+    p{
+        width: 150px;
+        margin: 1 auto;
+        padding-bottom: 1em;
+        padding-top: 1.5em;
+    }
+    #loading{
+        height: 80px;
+        width: 80px;
+        border: 6px solid white;
+        border-color: gray transparent gray transparent;
+        border-radius: 50%;
+        animation: spinLoading 2s linear infinite;
+        margin: 1 auto;
+    }
+}
+
+@keyframes spinLoading{
+    to{
+        transform: rotate(360deg);
+    }
+}
