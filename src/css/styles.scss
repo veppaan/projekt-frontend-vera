@@ -141,7 +141,10 @@ p{
 
 @media (min-width: 1200px){
     .headlogo{
-        @include logo($logoWidth: 300px);
+        img{
+            @include logo($logoWidth: 300px);
+            @include flex();
+        }
     }
     .start-text{
         padding-top: 2em;
@@ -179,7 +182,10 @@ p{
 }
 @media (min-width: 801px) and (max-width: 1199px){
     .headlogo{
-        @include logo($logoWidth: 200px);
+        img{
+            @include logo($logoWidth: 300px);
+            @include flex();
+        }
     }
     .start-text{
         padding-top: 2em;
@@ -220,7 +226,7 @@ p{
         font-size: 1.7em;
     }
     .headlogo{
-        margin: 0em 10em;
+        margin: 0em 11em;
         padding-left: 2em;
         img{
             @include logo($logoWidth: 200px);
