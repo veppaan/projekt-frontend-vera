@@ -105,7 +105,7 @@ async function showWater(name, id){
             //senaste resultatet
             const latestValue = data.value[data.value.length -1];
             allResultEL.style.display = "block";
-            waterResultEl.innerHTML=`Havstemperaturen vid station ${name} är just nu:`;
+            waterResultEl.innerHTML=`Havstemperaturen vid station ${name} är vid senaste mätningen:`;
             waveDegreeEl.textContent=`${latestValue.value} °C`; //Enda funktionen som inte tar bort animeringen
 
             const chosenLatitude = data.position[0].latitude;
@@ -187,7 +187,10 @@ if(!chart){
                 fontSize: "24px",
                 fontFamily: "Verdana, Geneva, Tahoma, sans-serif"
             }
-        }
+        },
+        zoom:{
+            enabled: false
+          }
       },
       dataLabels: {
         enabled: false
@@ -206,7 +209,7 @@ if(!chart){
         x: {
           format: 'dd/MM/yy HH:mm'
         },
-      },
+      }
       });
       chart.render();
 }
@@ -216,6 +219,7 @@ chart.updateSeries([{
     data: onlyTemp,
     categories: onlyDate
 }]);
+//Uppdaterar även diagramets x-axel för att datan ska bli korrekt på sidan
 chart.updateOptions({
     xaxis:{
         categories: onlyDate,

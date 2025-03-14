@@ -18,6 +18,10 @@ footer{
         margin-left: 10%;
     }
 }
+#small-text{
+    font-size: 0.9em;
+    color: #d9561e;
+}
 @mixin logo($logoWidth){
     width: $logoWidth;
     height: auto;
@@ -78,7 +82,7 @@ footer{
 }
 .degree{
     position: absolute;
-    color: lighten(#ff8600, 13%);
+    color: darken(#ffbda1, 5%);
     font-weight: bold;
     z-index: 10;
     display: flex;
