@@ -223,10 +223,10 @@ p{
 }
 @media (min-width: 300px) and (max-width: 800px){
     h1{
-        font-size: 1.7em;
+        font-size: 1.5em;
     }
     .headlogo{
-        margin: 0em 11em;
+        margin: 0em 8em;
         padding-left: 2em;
         img{
             @include logo($logoWidth: 200px);
@@ -237,7 +237,12 @@ p{
         padding-top: 1em;
         margin: 1 auto;
         text-align: center;
-        width: 40ch;
+        p{
+            width: 37ch;
+            padding-top: 1em;
+        margin: 1 auto;
+        text-align: center;
+        }
     }
     #map{
         height: 350px;
