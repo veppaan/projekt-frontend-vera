@@ -175,11 +175,19 @@ if(!chart){
     chart = new ApexCharts(document.querySelector("#chart"), {
         series: [{
         name: 'Havstemperatur',
-        data: onlyTemp
+        data: onlyTemp,
       }],
         chart: {
-        height: 350,
-        type: 'area'
+        width: "100%",
+        type: 'area',
+        title: {
+            text: "Senaste temperaturmätningarna från vald station",
+            align: "center",
+            style:{
+                fontSize: "24px",
+                fontFamily: "Verdana, Geneva, Tahoma, sans-serif"
+            }
+        }
       },
       dataLabels: {
         enabled: false
