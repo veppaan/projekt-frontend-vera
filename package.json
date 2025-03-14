@@ -14,6 +14,7 @@
     "@parcel/transformer-sass": "^2.13.3",
     "parcel": "^2.13.3",
     "sass": "^1.85.1",
-    "sharp": "^0.33.5"
+    "sharp": "^0.33.5",
+    "svgo": "^3.3.2"
   }
 }
