@@ -116,11 +116,10 @@ p{
         display: flex;
         justify-content: center;
         align-items: center;
-        column-gap: 1em;
-        if #chart{
-            #chart{
-                width: 600px;
-            }
+        column-gap: 2em;
+        #chart{
+            width: 600px;
+            display: none;
         }
     }
     #water-result{
@@ -221,7 +220,9 @@ p{
             width: 90vw;
         }
     }
-    .apexcharts-title-text{
-        font-size: 12px;
-    }
+}
+@media (max-width: 600px){
+.apexcharts-title-text{
+    font-size: 12px;
+}
 }

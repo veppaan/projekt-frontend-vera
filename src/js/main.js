@@ -156,7 +156,7 @@ async function initMap(latitude, longitude, name){
 
 let chart;
 function showChart(data){
-
+    document.getElementById("chart").style.display = "block";
     let onlyTemp = [];
     let onlyDate = []
     let array = data.value;
@@ -232,6 +232,4 @@ chart.updateOptions({
         tickAmount: onlyDate.length
     }
 })
-
-    
 }
