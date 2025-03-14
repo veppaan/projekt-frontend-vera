@@ -117,7 +117,7 @@ async function showWater(name, id){
             const latestValue = data.value[data.value.length -1];
             allResultEL.style.display = "block";
             chooseStationEl.style.display = "none";
-            waterResultEl.innerHTML=`Havstemperaturen vid station ${name} är vid senaste mätningen:`;
+            waterResultEl.innerHTML=`Havstemperaturen vid station ${name} vid senaste mätningen:`;
             waveDegreeEl.textContent=`${latestValue.value} °C`; //Enda funktionen som inte tar bort animeringen
 
             const chosenLatitude = data.position[0].latitude;
