@@ -12,6 +12,12 @@ body{
 h1{
     font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
 }
+footer{
+    p{
+        font-size: 0.8em;
+        margin-left: 10%;
+    }
+}
 @mixin logo($logoWidth){
     width: $logoWidth;
     height: auto;
@@ -179,15 +185,19 @@ p{
     
 }
 @media (min-width: 300px) and (max-width: 800px){
+    h1{
+        font-size: 1.75em;
+    }
     .headlogo{
         @include logo($logoWidth: 150px);
         height: 100px;
+        margin: 0em 32vw;
     }
     .start-text{
         padding-top: 5em;
         margin: 1 auto;
         text-align: center;
-        width: 45ch;
+        width: 40ch;
     }
     #map{
         height: 350px;
@@ -202,6 +212,10 @@ p{
         font-size: 20px;
     }
     #water-result{
+        width: 30ch;
+        text-align: center
+    }
+    .result-flex{
         @include flex();
     }
     .chart-map{
@@ -212,7 +226,7 @@ p{
         row-gap: 1em;
         #chart{
             margin: 1 auto;
-            width: 400px;
+            width: 90vw;
         }
     }
 }
