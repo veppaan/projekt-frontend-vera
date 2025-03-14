@@ -186,15 +186,18 @@ p{
 }
 @media (min-width: 300px) and (max-width: 800px){
     h1{
-        font-size: 1.75em;
+        font-size: 1.7em;
     }
     .headlogo{
-        @include logo($logoWidth: 150px);
-        height: 100px;
-        margin: 0em 6em;
+        margin: 0em 10em;
+        padding-left: 2em;
+        img{
+            @include logo($logoWidth: 200px);
+            @include flex();
+        }
     }
     .start-text{
-        padding-top: 5em;
+        padding-top: 1em;
         margin: 1 auto;
         text-align: center;
         width: 40ch;
