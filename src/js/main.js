@@ -124,6 +124,7 @@ async function showWater(name, id){
             const chosenLongitude = data.position[0].longitude;
 
             initMap(chosenLatitude, chosenLongitude, name);
+            getNewData(chosenLatitude, chosenLongitude);
             showChart(data);
           }else{
             waterResultEl.innerHTML=`Temperaturen i vattnet från station ${name} gick inte att hämta...`;
@@ -248,4 +249,19 @@ chart.updateOptions({
         text: `Senaste temperaturmätningarna från ${name}`
     }
 })
+}
+//Hämtar in nytt API som kollar våghöjder
+async function getNewData(lat, long){
+    console.log(lat);
+    let url = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${long}&current=wave_height`;
+     await fetch(url)
+    .then(response => 
+        response.json() // Omvandla till json
+    )
+    .then(data => {
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('Fel vid hämtning av stationer:', error);
+    });
 }
