@@ -40,23 +40,26 @@
         <select name="water" id="water"> <option value="">Välj station</option></select>
     </section>
     <div id="all-result">
+        <div class="water-flex">
         <div class="result-flex">
         <div id="water-result"></div>
         </div>
         <div class="container">
             <div class="water-wave"><span class="degree"></span></div>
         </div>
-    </div>
-    <div class="flex-wave">
-        <div id="wave-height">
-            <picture>
-                <source srcset="images/wave-icon.png?=avif&width=150" type="image/avif">
-                <source srcset="images/wave-icon.png?as=webp&width=150" type="image/webp">
-                <img src="images/wave-icon.png" alt="Ikon av en havsvåg>" width="150" height="150">
-            </picture>
         </div>
+        <div class="flex-wave">
             <p id="height-text"></p>
-        </div>
+            <div id="wave-height">
+                <picture>
+                    <source srcset="images/wave-icon.png?=avif&width=150" type="image/avif">
+                    <source srcset="images/wave-icon.png?as=webp&width=150" type="image/webp">
+                    <img src="images/wave-icon.png" alt="Ikon av en havsvåg>" width="150" height="150">
+                </picture>
+            </div>
+    </div>
+    </div>
+    
 
     <div class="chart-map">
     <div id="chart"></div>
