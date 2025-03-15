@@ -91,6 +91,19 @@ p{
     @include flex();
     flex-direction: column;
 }
+.flex-wave{
+    @include flex();
+    p{
+        font-size: 0.8em;
+        max-width: 20ch;
+    }
+    #height{
+        font-weight: bold;
+    }
+}
+#all-result{
+    @include flex();
+}
 
 
 @media (min-width: 1200px){

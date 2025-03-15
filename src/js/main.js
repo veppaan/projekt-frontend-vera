@@ -251,7 +251,7 @@ chart.updateOptions({
         tickAmount: onlyDate.length
     },
     title:{
-        text: `Senaste temperaturmätningarna från ${name}`
+        text: `Senaste temperaturmätningarna`
     }
 })
 }
@@ -272,10 +272,26 @@ async function getWaveData(lat, long){
 function showWaveHeight(currentWave){
     let waveTime = currentWave.current.time;
     let waveHeight = currentWave.current.wave_height;
-    console.log(waveTime, waveHeight);
+    let heightText = document.getElementById("height-text");
     const time = new Date(waveTime);
-    console.log(time);
 
-    console.log(time.toLocaleString('sv-SE', {timeZone: 'Europe/Stockholm'}));
+    let day = time.getDate();
+    let month = time.getMonth() + 1;
+    let hours = time.getHours();
+    let minutes = time.getMinutes();
+    if(hours < 10){
+        hours = hours + "0";
+    }
+    if(minutes < 10){
+        minutes = minutes + "0";
+    }
+
+    if(!waveHeight){
+        heightText.innerHTML= "Våghöjd saknas vid denna station";
+    }else{
+        heightText.innerHTML= `Våghöjd <span id="height"> ${waveHeight}m</span> vid senaste mätningen (${hours}:${minutes}, ${day}/${month})`;
+    }
+    //console.log(`Hämtad ${hours}:${minutes}, ${day}/${month}`)
+    //console.log(time.toLocaleString('sv-SE', {timeZone: 'Europe/Stockholm'}));
     //console.log(time.toISOString);
 }
