@@ -133,6 +133,12 @@ p{
     #water-result{
         @include flex();
     }
+    #wave-height{
+        img{
+        width: 100px;
+        height: 100px;
+        }
+    }
 }
 @media (min-width: 801px) and (max-width: 1199px){
     .headlogo{
@@ -171,6 +177,12 @@ p{
         #chart{
             margin: 1 auto;
             width: 600px;
+        }
+    }
+    #wave-height{
+        img{
+        width: 85px;
+        height: 85px;
         }
     }
     
