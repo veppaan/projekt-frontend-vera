@@ -124,7 +124,7 @@ async function showWater(name, id){
             const chosenLongitude = data.position[0].longitude;
 
             initMap(chosenLatitude, chosenLongitude, name);
-            getNewData(chosenLatitude, chosenLongitude);
+            getWaveData(chosenLatitude, chosenLongitude);
             showChart(data);
           }else{
             waterResultEl.innerHTML=`Temperaturen i vattnet från station ${name} gick inte att hämta...`;
@@ -172,7 +172,7 @@ let chart;
 function showChart(data){
     document.getElementById("chart").style.display = "block";
     let onlyTemp = [];
-    let onlyDate = []
+    let onlyDate = [];
     let array = data.value;
     console.log(data.value);
 
@@ -180,10 +180,15 @@ function showChart(data){
 
     for(let i = array.length - 1; i >= array.length - arrayLength; i--){
             onlyTemp.push(data.value[i].value);
-            onlyDate.push(data.value[i].date);
+            let localDate = data.value[i].date;
+            //Dubbelkollar att datan använder min tidszon
+            let dateTime = new Date(localDate);
+            let milliSec = dateTime.getTime();
+            onlyDate.push(milliSec);
     }
     console.log(onlyDate);
-    console.log(onlyTemp);
+    let localDate = onlyDate;
+    //console.log(onlyTemp);
     let xPoints = onlyDate.length;
     console.log(xPoints);
 
@@ -251,17 +256,25 @@ chart.updateOptions({
 })
 }
 //Hämtar in nytt API som kollar våghöjder
-async function getNewData(lat, long){
-    console.log(lat);
+async function getWaveData(lat, long){
     let url = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${long}&current=wave_height`;
      await fetch(url)
     .then(response => 
         response.json() // Omvandla till json
     )
     .then(data => {
-        console.log(data);
+        showWaveHeight(data);
     })
     .catch(error => {
-        console.error('Fel vid hämtning av stationer:', error);
+        console.error('Fel vid hämtning av våghöjder:', error);
     });
+}
+function showWaveHeight(currentWave){
+    let waveTime = currentWave.current.time;
+    let waveHeight = currentWave.current.wave_height;
+    console.log(waveTime, waveHeight);
+    const time = new Date(waveTime);
+
+    console.log(time.toLocaleString('sv-SE', {timeZone: 'Europe/Stockholm'}));
+    //console.log(time.toISOString);
 }
