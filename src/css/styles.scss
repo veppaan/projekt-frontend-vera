@@ -39,6 +39,10 @@ footer{
     height: auto;
     margin: 1 auto;
 }
+.container{
+    display: flex;
+    column-gap: 5em;
+}
 .degree{
     position: absolute;
     color: darken(#ffbda1, 5%);

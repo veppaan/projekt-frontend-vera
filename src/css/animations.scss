@@ -51,6 +51,22 @@
         top: -30%;
     }
 }
+#wave-height{
+    animation: wave-height 3s linear infinite;
+}
+@keyframes wave-height{
+    0%{
+        transform: translateY(0);
+    }
+    50%{
+        transform: translateY(-5px);
+    }
+    100%{
+        transform: translateY(0);
+    }
+}
+
+
 .loading-elements{
     display: block;
     p{

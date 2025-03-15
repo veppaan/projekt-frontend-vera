@@ -44,7 +44,17 @@
         <div id="water-result"></div>
         </div>
         <div class="container">
-            <div class="water-wave"><span class="degree"></span><span id="wave-height"></span></div>
+            <div class="water-wave"><span class="degree"></span></div>
+            <div id="wave-height">
+                <div class="flex-wave">
+                <picture>
+                    <source srcset="images/wave-icon.png?=avif&width=150" type="image/avif">
+                    <source srcset="images/wave-icon.png?as=webp&width=150" type="image/webp">
+                    <img src="images/wave-icon.png" alt="Ikon av en havsvåg>" width="75" height="75">
+                </picture>
+                <p id="height-text"></p>
+            </div>
+            </div>
         </div>
     </div>
 

@@ -274,6 +274,7 @@ function showWaveHeight(currentWave){
     let waveHeight = currentWave.current.wave_height;
     console.log(waveTime, waveHeight);
     const time = new Date(waveTime);
+    console.log(time);
 
     console.log(time.toLocaleString('sv-SE', {timeZone: 'Europe/Stockholm'}));
     //console.log(time.toISOString);
