@@ -20,9 +20,13 @@ h2{
     font-weight: 600;
 }
 footer{
+    margin: 3em 0;
     p{
         font-size: 0.8em;
         margin-left: 10%;
+    }
+    hr{
+        margin: 2em 0;
     }
 }
 #small-text{
@@ -33,6 +37,7 @@ footer{
 #info-data{
     font-size: 0.6em;
     max-width: 40ch;
+    margin-top: 0.8em;
     text-align: center;
 }
 @mixin logo($logoWidth){
@@ -129,6 +134,12 @@ p{
         margin: 1 auto;
         text-align: center;
         width: 70ch;
+        h1{
+            margin-bottom: 0.8em;
+        }
+        #small-text{
+            margin-top: 0.5em;
+        }
     }
     #map{
         height: 400px;
@@ -176,6 +187,12 @@ p{
         margin: 1 auto;
         text-align: center;
         width: 60ch;
+        h1{
+            margin-bottom: 0.6em;
+        }
+        #small-text{
+            margin-top: 0.5em;
+        }
     }
     #map{
         height: 350px;

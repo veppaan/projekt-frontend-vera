@@ -291,7 +291,4 @@ function showWaveHeight(currentWave){
     }else{
         heightText.innerHTML= `Våghöjd <span id="height"> ${waveHeight}m</span> vid senaste mätningen (${hours}:${minutes}, ${day}/${month})`;
     }
-    //console.log(`Hämtad ${hours}:${minutes}, ${day}/${month}`)
-    //console.log(time.toLocaleString('sv-SE', {timeZone: 'Europe/Stockholm'}));
-    //console.log(time.toISOString);
 }
