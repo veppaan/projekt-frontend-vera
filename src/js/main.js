@@ -124,7 +124,7 @@ async function showWater(name, id){
             const chosenLongitude = data.position[0].longitude;
 
             initMap(chosenLatitude, chosenLongitude, name);
-            showChart(data, name);
+            showChart(data);
           }else{
             waterResultEl.innerHTML=`Temperaturen i vattnet från station ${name} gick inte att hämta...`;
           }
@@ -168,7 +168,7 @@ async function initMap(latitude, longitude, name){
 }
 
 let chart;
-function showChart(data, name){
+function showChart(data){
     document.getElementById("chart").style.display = "block";
     let onlyTemp = [];
     let onlyDate = []
@@ -203,7 +203,7 @@ if(!chart){
           },
       },
       title: {
-        text: `Senaste temperaturmätningarna från ${name}`,
+        text: `Senaste temperaturmätningarna`,
         align: "center",
         style:{
             fontSize: "14px",
