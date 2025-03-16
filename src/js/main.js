@@ -257,12 +257,13 @@ chart.updateOptions({
 }
 //Hämtar in nytt API som kollar våghöjder
 async function getWaveData(lat, long){
-    let url = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${long}&current=wave_height`;
+    let url = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${long}&current=wave_height&timezone=Europe%2FBerlin&wind_speed_unit=ms`;
      await fetch(url)
     .then(response => 
         response.json() // Omvandla till json
     )
     .then(data => {
+        console.log(data);
         showWaveHeight(data);
     })
     .catch(error => {
