@@ -332,6 +332,6 @@ function showWindSpeed(currentWindSpeed){
     if(!windSpeed){
         windText.innerHTML= "Vindhastighet saknas vid denna station";
     }else{
-        windText.innerHTML= `Vindhastighet <span id="height"> ${windSpeed}m/s</span> vid senaste mätningen (${hours}:${minutes}, ${day}/${month})`;
+        windText.innerHTML= `Vindhastighet <span id="height"> ${windSpeed}m/s</span> vid senaste mätningen <br>(${hours}:${minutes}, ${day}/${month})`;
     }
 }
