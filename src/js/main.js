@@ -125,6 +125,7 @@ async function showWater(name, id){
 
             initMap(chosenLatitude, chosenLongitude, name);
             getWaveData(chosenLatitude, chosenLongitude);
+            getWindData(chosenLatitude, chosenLongitude);
             showChart(data);
           }else{
             waterResultEl.innerHTML=`Temperaturen i vattnet från station ${name} gick inte att hämta...`;
@@ -270,6 +271,7 @@ async function getWaveData(lat, long){
         console.error('Fel vid hämtning av våghöjder:', error);
     });
 }
+
 function showWaveHeight(currentWave){
     let waveTime = currentWave.current.time;
     let waveHeight = currentWave.current.wave_height;
@@ -291,5 +293,45 @@ function showWaveHeight(currentWave){
         heightText.innerHTML= "Våghöjd saknas vid denna station";
     }else{
         heightText.innerHTML= `Våghöjd <span id="height"> ${waveHeight}m</span> vid senaste mätningen (${hours}:${minutes}, ${day}/${month})`;
+    }
+}
+
+async function getWindData(lat, long){
+    let url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current=wind_speed_10m&timezone=Europe%2FBerlin&wind_speed_unit=ms`;
+     await fetch(url)
+    .then(response => 
+        response.json() // Omvandla till json
+    )
+    .then(data => {
+        showWindSpeed(data);
+    })
+    .catch(error => {
+        console.error('Fel vid hämtning av vindhastighet:', error);
+    });
+}
+function showWindSpeed(currentWindSpeed){
+    let windSpeedTime = currentWindSpeed.current.time;
+    let windSpeed = currentWindSpeed.current.wind_speed_10m;
+    let windText = document.getElementById("wind-text");
+
+    console.log(windSpeed);
+
+    const time = new Date(windSpeedTime);
+
+    let day = time.getDate();
+    let month = time.getMonth() + 1;
+    let hours = time.getHours();
+    let minutes = time.getMinutes();
+    if(hours < 10){
+        hours = hours + "0";
+    }
+    if(minutes < 10){
+        minutes = minutes + "0";
+    }
+
+    if(!windSpeed){
+        windText.innerHTML= "Vindhastighet saknas vid denna station";
+    }else{
+        windText.innerHTML= `Vindhastighet <span id="height"> ${windSpeed}m/s</span> vid senaste mätningen (${hours}:${minutes}, ${day}/${month})`;
     }
 }
