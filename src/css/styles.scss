@@ -104,9 +104,6 @@ p{
 }
 .flex-wave{
     @include flex();
-    border: 1px solid rgba(128, 128, 128, 0.194);
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
     padding: 1em 0;
     margin-bottom: 2em;
     p{
@@ -115,6 +112,17 @@ p{
     }
     #height{
         font-weight: bold;
+    }
+}
+.extra-info{
+    @include flex();
+    flex-direction: column;
+}
+.info-flex{
+    margin-top: 1em;
+    max-width: 400px; 
+    h2{
+        text-align: center
     }
 }
 .water-flex{
@@ -176,8 +184,14 @@ p{
     }
     #wave-height{
         img{
-        width: 100px;
-        height: 100px;
+            width: 100px;
+            height: 100px;
+        }
+    }
+    #wind-speed{
+        img{
+            width: 100px;
+            height: 100px;
         }
     }
 }
@@ -230,6 +244,12 @@ p{
         img{
         width: 85px;
         height: 85px;
+        }
+    }
+    #wind-speed{
+        img{
+            width: 85px;
+            height: 85px;
         }
     }
     
@@ -291,6 +311,12 @@ p{
         img{
         width: 75px;
         height: 75px;
+        }
+    }
+    #wind-speed{
+        img{
+            width: 75px;
+            height: 75px;
         }
     }
 }
