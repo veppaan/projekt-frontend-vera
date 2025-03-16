@@ -51,22 +51,28 @@
         top: -30%;
     }
 }
-#wave-height{
-    animation: wave-height 3s linear infinite;
+#height-text:hover + #wave-height{
+    animation: wave-height 4s ease-in-out infinite;
 }
 @keyframes wave-height{
     0%{
-        transform: translateY(0);
+        transform: translate(0, 0);
+    }
+    25%{
+        transform: translateX(20px)translateY(-15px) rotate(-5deg);
     }
     50%{
-        transform: translateY(-5px);
+        transform: translate(40px, 0);
+    }
+    75%{
+        transform: translateX(30px)translateY(-15px) rotate(-5deg);
     }
     100%{
-        transform: translateY(0);
+        transform: translate(0, 0);
     }
 }
 #wind-text:hover + #wind-speed{
-    animation: wind-speed 3s linear infinite;
+    animation: wind-speed 5s ease-in-out infinite;
 }
 
 @keyframes wind-speed{
@@ -74,13 +80,13 @@
         transform: translate(0, 0);
     }
     25%{
-        transform: translateX(20px)translateY(-20px) rotate(-45deg);
+        transform: translateX(30px)translateY(-10px) rotate(-20deg);
     }
     50%{
         transform: translate(0, 0);
     }
     75%{
-        transform: translateX(20px)translateY(20px) rotate(45deg);
+        transform: translateX(30px)translateY(10px) rotate(20deg);
     }
     100%{
         transform: translate(0, 0);
