@@ -114,6 +114,7 @@ async function showWater(name, id){
             let chooseStationEl = document.getElementById("small-text");
             waterResultEl.innerHTML="";
             //senaste resultatet
+            console.log(data);
             const latestValue = data.value[data.value.length -1];
             allResultEL.style.display = "block";
             chooseStationEl.style.display = "none";
@@ -184,8 +185,10 @@ function showChart(data){
             let localDate = data.value[i].date;
             //Dubbelkollar att datan använder min tidszon
             let dateTime = new Date(localDate);
+            const checkSwedishTime = dateTime.getTimezoneOffset() === -120;
             let milliSec = dateTime.getTime();
-            onlyDate.push(milliSec);
+            const winterOrSummer = milliSec + (checkSwedishTime ? 7200000 : 3600000);
+            onlyDate.push(winterOrSummer);
     }
     console.log(onlyDate);
     let localDate = onlyDate;
