@@ -23,12 +23,12 @@ async function getStations(){
     })
     .then(data => {
         //Variabler för olika attribut som finns i datan, använder mig av map för att hitta
-        const myName = data.station.map(station => station.name);
-        const myId = data.station.map(station => station.id);
+        const allNames = data.station.map(station => station.name);
+        const allIds = data.station.map(station => station.id);
         //const myLatitude = data.station.map(station => station.latitude);
         //const myLongitude = data.station.map(station => station.longitude);
         //Anropar utskrift med variabler till select
-        writeWaters(myName, myId);
+        writeWaters(allNames, allIds);
     })
     .catch(error => {
         console.error('Fel vid hämtning av stationer:', error);
@@ -37,7 +37,9 @@ async function getStations(){
 
 //Utskrift till select med alla namn vars url fungerar
 /**
- * Skriver ut stations-namn till select-box
+ * Skriver ut stations-namn (vars url fungerar) till select-box
+ * Startar/stänger av laddings-animering
+ * Anropar ny funktion med vald station och id
  * @param {array} waters 
  * @param {array} ids 
  */
@@ -90,6 +92,11 @@ async function writeWaters(waters, ids){
 }
 
 //Kollar idn med url för att filtrera bort ogilitga
+/**
+ * Tar in ett id för att testa om dess URL fungerar eller är ogiltig
+ * @param {number} id 
+ * @returns {boolean}
+ */
 async function tryUrl(id){
     const url= `https://opendata-download-ocobs.smhi.se/api/version/latest/parameter/5/station/${id}/period/latest-day/data.json`
     try{
@@ -105,6 +112,12 @@ async function tryUrl(id){
     }
 }
 //Hämtar ny url och skriver ut vattentemperaturen
+/**
+ * Tar ut information från vald station och skriver ut resultat till webbsida
+ * Anropar 4 andra funktioner och skickar med data som de behöver
+ * @param {string} name 
+ * @param {number} id 
+ */
 async function showWater(name, id){
     let url = `https://opendata-download-ocobs.smhi.se/api/version/latest/parameter/5/station/${id}/period/latest-day/data.json`;
     //Hämtar url med det unika id:t från vald station
@@ -148,6 +161,9 @@ async function showWater(name, id){
         console.error('Fel vid hämtning av data:', error);
     });
 }
+/**
+ * Visar en karta vid sidladdning
+ */
 async function startMap(){
         const latitude = 62.915;
         const longitude = 17.380;
@@ -161,6 +177,12 @@ async function startMap(){
 }
 let map;
 let marker;
+/**
+ * Skapar och visar karta med markering för vald station
+ * @param {number} latitude 
+ * @param {number} longitude 
+ * @param {string} name 
+ */
 async function initMap(latitude, longitude, name){
 
     const { Map } = await google.maps.importLibrary("maps");
@@ -182,6 +204,10 @@ async function initMap(latitude, longitude, name){
 }
 
 let chart;
+/**
+ * Skapar och skriver ut havtemperaturer senaste tiden från vald station till ett diagram
+ * @param {object} data 
+ */
 function showChart(data){
     document.getElementById("chart").style.display = "block";
     let onlyTemp = [];
@@ -202,58 +228,58 @@ function showChart(data){
             onlyDate.push(winterOrSummer);
     }
     console.log(onlyDate);
-    let localDate = onlyDate;
+    //let localDate = onlyDate;
     //console.log(onlyTemp);
     let xPoints = onlyDate.length;
     console.log(xPoints);
-
-if(!chart){
-    chart = new ApexCharts(document.querySelector("#chart"), {
-        series: [{
-        name: 'Havstemperatur',
-        data: onlyTemp,
-      }],
-        chart: {
-        width: "100%",
-        type: 'area',
-        zoom:{
-            enabled: false
-          },
-          toolbar:{
-            show: false
-          },
-      },
-      title: {
-        text: `Senaste temperaturmätningarna`,
-        align: "center",
-        style:{
-            fontSize: "14px",
-            fontWeight: "600",
-            color: "#324c56",
-            fontFamily: "Verdana, Geneva, Tahoma, sans-serif"
-        }
-    },
-      dataLabels: {
-        enabled: false
-      },
-      stroke: {
-        curve: 'smooth'
-      },
-      xaxis: {
-        type: 'datetime',
-        categories: onlyDate
-      },
-      markers:{
-        size: 6,
-      },
-      tooltip: {
-        x: {
-          format: 'dd/MM/yy HH:mm'
+    //Lägger !chart då den krånglade utan
+    if(!chart){
+        chart = new ApexCharts(document.querySelector("#chart"), {
+            series: [{
+            name: 'Havstemperatur',
+            data: onlyTemp,
+        }],
+            chart: {
+            width: "100%",
+            type: 'area',
+            zoom:{
+                enabled: false
+            },
+            toolbar:{
+                show: false
+            },
         },
-      }
-      });
-      chart.render();
-}
+        title: {
+            text: `Senaste temperaturmätningarna`,
+            align: "center",
+            style:{
+                fontSize: "14px",
+                fontWeight: "600",
+                color: "#324c56",
+                fontFamily: "Verdana, Geneva, Tahoma, sans-serif"
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            type: 'datetime',
+            categories: onlyDate
+        },
+        markers:{
+            size: 6,
+        },
+        tooltip: {
+            x: {
+            format: 'dd/MM/yy HH:mm'
+            },
+        }
+        });
+        chart.render();
+    }
 //Uppdaterar båda arrayerna vid byte av station (de hängde inte med och använde gammal data) 
 chart.updateSeries([{
     data: onlyTemp,
@@ -271,6 +297,12 @@ chart.updateOptions({
 })
 }
 //Hämtar in nytt API som kollar våghöjder
+/**
+ * Funktion som hämtar våglängder från API på vald plats
+ * Anropar utskriftsfunktion med den hämtade datan
+ * @param {number} lat 
+ * @param {number} long 
+ */
 async function getWaveData(lat, long){
     let url = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&longitude=${long}&current=wave_height&timezone=Europe%2FBerlin&wind_speed_unit=ms`;
      await fetch(url)
@@ -285,7 +317,10 @@ async function getWaveData(lat, long){
         console.error('Fel vid hämtning av våghöjder:', error);
     });
 }
-
+/**
+ * Tar in data och skriver ut senaste våghöjden
+ * @param {object} currentWave 
+ */
 function showWaveHeight(currentWave){
     let waveTime = currentWave.current.time;
     let waveHeight = currentWave.current.wave_height;
@@ -309,7 +344,12 @@ function showWaveHeight(currentWave){
         heightText.innerHTML= `Våghöjd <span id="height"> ${waveHeight}m</span> vid senaste mätningen (${hours}:${minutes}, ${day}/${month})`;
     }
 }
-
+/**
+ * Funktion som hämtar vindhastighet från API på vald plats
+ * Anropar utskriftsfunktion
+ * @param {number} lat 
+ * @param {number} long 
+ */
 async function getWindData(lat, long){
     let url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${long}&current=wind_speed_10m&timezone=Europe%2FBerlin&wind_speed_unit=ms`;
      await fetch(url)
@@ -323,6 +363,10 @@ async function getWindData(lat, long){
         console.error('Fel vid hämtning av vindhastighet:', error);
     });
 }
+/**
+ * Skriver ut senaste vindhastigheten till webbsida
+ * @param {object} currentWindSpeed 
+ */
 function showWindSpeed(currentWindSpeed){
     let windSpeedTime = currentWindSpeed.current.time;
     let windSpeed = currentWindSpeed.current.wind_speed_10m;
