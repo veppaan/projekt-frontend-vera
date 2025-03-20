@@ -1,10 +1,16 @@
 "use strict";
 
+/**
+ * Funktion exekverar två funktioner vid sidladdning
+ */
 window.onload = () =>{
     getStations();
     startMap();
 }
-
+/**
+ * Hämtar SMHI-api och tar ut namn, id för alla stationer
+ * Anropar utskriftsfunktion med datat som uthämtats
+ */
 async function getStations(){
     //Hämtar url med alla vatten-stationer
     fetch(`https://opendata-download-ocobs.smhi.se/api/version/latest/parameter/5.json`)
@@ -19,10 +25,10 @@ async function getStations(){
         //Variabler för olika attribut som finns i datan, använder mig av map för att hitta
         const myName = data.station.map(station => station.name);
         const myId = data.station.map(station => station.id);
-        const myLatitude = data.station.map(station => station.latitude);
-        const myLongitude = data.station.map(station => station.longitude);
+        //const myLatitude = data.station.map(station => station.latitude);
+        //const myLongitude = data.station.map(station => station.longitude);
         //Anropar utskrift med variabler till select
-        writeWaters(myName, myId, myLatitude, myLongitude);
+        writeWaters(myName, myId);
     })
     .catch(error => {
         console.error('Fel vid hämtning av stationer:', error);
@@ -30,6 +36,11 @@ async function getStations(){
 }
 
 //Utskrift till select med alla namn vars url fungerar
+/**
+ * Skriver ut stations-namn till select-box
+ * @param {array} waters 
+ * @param {array} ids 
+ */
 async function writeWaters(waters, ids){
     //console.log(waters);
     //console.log(ids);
@@ -67,7 +78,7 @@ async function writeWaters(waters, ids){
         name: name,
         id: ids[i],
       }));
-      //Eventlyssnare lyssnar på "change" för att kunna ta ut värden från den avlda
+      //Eventlyssnare lyssnar på "change" för att kunna ta ut värden från den valda
     watersEl.addEventListener('change', function(event) {
         const chosenName = event.target.value;
         
