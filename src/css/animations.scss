@@ -7,7 +7,7 @@
         min-height: 20vh;
         position: relative;
         .water-wave{
-            background-color: #35b2e7;
+            background-color: #4dbae9;
             border-radius: 50%;
             box-shadow: inset 0 0 10px 0 rgba(0,0,0,0.5), 0 0 20px 0 rgba(0,0,0,0.2);
             position: relative;
@@ -19,8 +19,8 @@
         }
     }
 }
-.water-wave:after,
-.water-wave:before{
+.water-wave::after,
+.water-wave::before{
     content: "";
     position: absolute;
     width: 200%;
@@ -29,11 +29,11 @@
     left: 50%;
     background: #fff;
 }
-.water-wave:after{
+.water-wave::after{
     border-radius: 45%;
     animation: water-wave 10s linear infinite;
 }
-.water-wave:before{
+.water-wave::before{
     border-radius: 35%;
     background: rgba(255, 255, 255, 0.3);
     animation: water-wave 10s linear infinite;
