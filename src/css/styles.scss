@@ -26,7 +26,8 @@ h2{
 }
 footer{
     margin: 3em 0;
-    p{
+    p, a{
+        color: darken($font-color, 30%);
         font-size: 0.8em;
         margin-left: 10%;
     }
