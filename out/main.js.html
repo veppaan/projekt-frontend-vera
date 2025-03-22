@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: main.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: main.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>"use strict";
+
+/**
+ * Funktion exekverar två funktioner vid sidladdning
+ */
+window.onload = () =>{
+    getStations();
+    startMap();
+}
+/**
+ * Hämtar SMHI-api och tar ut namn, id för alla stationer
+ * Anropar utskriftsfunktion med datat som uthämtats
+ */
+async function getStations(){
+    //Hämtar url med alla vatten-stationer
+    fetch(`https://opendata-download-ocobs.smhi.se/api/version/latest/parameter/5.json`)
+    .then(response => {
+        // Kollar om responsen är ok
+        if (!response.ok) {
+            throw new Error('Något gick fel med förfrågan');
+        }
+        return response.json(); //Gör om data till JSON
+    })
+    .then(data => {
+        //Variabler för olika attribut som finns i datan, använder mig av map för att hitta
+        const allNames = data.station.map(station => station.name);
+        const allIds = data.station.map(station => station.id);
+        //const myLatitude = data.station.map(station => station.latitude);
+        //const myLongitude = data.station.map(station => station.longitude);
+        //Anropar utskrift med variabler till select
+        writeWaters(allNames, allIds);
+    })
+    .catch(error => {
+        console.error('Fel vid hämtning av stationer:', error);
+    });
+}
+
+//Utskrift till select med alla namn vars url fungerar
+/**
+ * Skriver ut stations-namn (vars url fungerar) till select-box
+ * Startar/stänger av laddings-animering
+ * Anropar ny funktion med vald station och id
+ * @param {array} waters 
+ * @param {array} ids 
+ */
+async function writeWaters(waters, ids){
+    //console.log(waters);
+    //console.log(ids);
+    let workingNames = [];
+    let watersEl = document.getElementById("water");
+    let loadingEl = document.querySelector(".loading-elements");
+    let optionsEl = document.querySelector("#section-option");
+    
+    //Loopar igenom alla idn för att kunna ta bort alla ogiltiga
+    for (let i = 0; i &lt;= ids.length; i++){
+        //Funktion som kollar url
+        let data = await tryUrl(ids[i]);
+        //Om datan (urlen med speciellt id) kommer tillbaka som true läggs dess namn till i select-lista
+        if(data){ 
+                let optionEl = document.createElement("option");
+                optionEl.value = waters[i];
+                optionEl.textContent = waters[i];
+                watersEl.appendChild(optionEl);
+                workingNames.push(waters[i]);
+            
+        }else{
+            console.log("Skippar länk som inte fungerar")
+        }
+        //Kollar om loopen är klar så att laddings-animering slutar och listan med stationer visas
+        if( i === ids.length -1){
+            loadingEl.style.display = 'none';
+            optionsEl.style.display = 'block'; 
+            setTimeout(() => {
+                optionsEl.style.opacity = '1';
+            }, 10); //Mjuk övergång i 1s till att den syns
+        }
+    }
+    //Gör nya objekt för bara namn och id för att lättare hålla reda på vad som finns i objekt
+    const stations = waters.map((name, i) => ({
+        name: name,
+        id: ids[i],
+      }));
+      //Eventlyssnare lyssnar på "change" för att kunna ta ut värden från den valda
+    watersEl.addEventListener('change', function(event) {
+        const chosenName = event.target.value;
+        
+        // Hitta objekt ur stations för att matcha namn och id
+        const chosenStation = stations.find(station => station.name === chosenName);
+        //Anropar ny funktion med valt namn och id som ska visa dess temperatur
+        showWater(chosenStation.name, chosenStation.id); 
+      });
+}
+
+//Kollar idn med url för att filtrera bort ogilitga
+/**
+ * Tar in ett id för att testa om dess URL fungerar eller är ogiltig
+ * @param {number} id 
+ * @returns {boolean}
+ */
+async function tryUrl(id){
+    const url= `https://opendata-download-ocobs.smhi.se/api/version/latest/parameter/5/station/${id}/period/latest-day/data.json`
+    try{
+    let response = await fetch(url);
+        // Kollar om responsen är ok
+        if (!response.ok) {
+            return false;
+        }
+        return true;
+        
+    }catch(error){
+        return false;
+    }
+}
+//Hämtar ny url och skriver ut vattentemperaturen
+/**
+ * Tar ut information från vald station och skriver ut resultat till webbsida
+ * Anropar 4 andra funktioner och skickar med data som de behöver
+ * @param {string} name 
+ * @param {number} id 
+ */
+async function showWater(name, id){
+    let url = `https://opendata-download-ocobs.smhi.se/api/version/latest/parameter/5/station/${id}/period/latest-day/data.json`;
+    //Hämtar url med det unika id:t från vald station
+     await fetch(url)
+    .then(response => {
+        // Kollar om responsen är ok
+        if (!response.ok) {
+            throw new Error('Något gick fel med förfrågan');
+        }
+        return response.json(); // Omvandla till json
+    })
+    .then(data => {
+        //Temperatur ligger under value.value så jag tar första arrayen (senaste hämtningen)
+        if (data &amp;&amp; data.value) {
+            let waterResultEl = document.getElementById("water-result");
+            let waveDegreeEl = document.querySelector(".degree");
+            let allResultEL = document.getElementById("all-result");
+            let chooseStationEl = document.getElementById("small-text");
+            waterResultEl.innerHTML="";
+            //senaste resultatet
+            console.log(data);
+            const latestValue = data.value[data.value.length -1];
+            allResultEL.style.display = "block";
+            chooseStationEl.style.display = "none";
+            waterResultEl.innerHTML=`Havstemperaturen vid station ${name} vid senaste mätningen:`;
+            waveDegreeEl.textContent=`${latestValue.value} °C`; //Enda funktionen som inte tar bort animeringen
+
+            const chosenLatitude = data.position[0].latitude;
+            const chosenLongitude = data.position[0].longitude;
+
+            initMap(chosenLatitude, chosenLongitude, name);
+            getWaveData(chosenLatitude, chosenLongitude);
+            getWindData(chosenLatitude, chosenLongitude);
+            showChart(data);
+          }else{
+            waterResultEl.innerHTML=`Temperaturen i vattnet från station ${name} gick inte att hämta...`;
+          }
+    })
+    .catch(error => {
+        //Fångar upp fel
+        console.error('Fel vid hämtning av data:', error);
+    });
+}
+/**
+ * Visar en karta vid sidladdning
+ */
+async function startMap(){
+        const latitude = 62.915;
+        const longitude = 17.380;
+    
+        const { Map } = await google.maps.importLibrary("maps");
+    
+        map = new Map(document.getElementById("map"), {
+            center: { lat: latitude, lng: longitude},
+            zoom: 5,
+        });
+}
+let map;
+let marker;
+/**
+ * Skapar och visar karta med markering för vald station
+ * @param {number} latitude 
+ * @param {number} longitude 
+ * @param {string} name 
+ */
+async function initMap(latitude, longitude, name){
+
+    const { Map } = await google.maps.importLibrary("maps");
+    const { AdvancedMarkerElement } = await google.maps.importLibrary("marker");
+
+    map = new Map(document.getElementById("map"), {
+        center: { lat: latitude, lng: longitude},
+        zoom: 11,
+        mapId: "29dd997073953c33",
+    });
+    marker = new AdvancedMarkerElement({
+        map,
+        position: { lat: latitude, lng: longitude },
+        title: name
+    });
+
+    let mapHeadingEl = document.getElementById("head-map");
+    mapHeadingEl.innerHTML=`${name}:s kartposition`;
+}
+
+let chart;
+/**
+ * Skapar och skriver ut havtemperaturer senaste tiden från vald station till ett diagram
+ * @param {object} data 
+ */
+function showChart(data){
+    document.getElementById("chart").style.display = "block";
+    let onlyTemp = [];
+    let onlyDate = [];
+    let array = data.value;
+    console.log(data.value);
+
+    const arrayLength = Math.min(10, array.length); //Tar ut 10 eller längden på arrayen om den innehåller mindre
+
+    for(let i = array.length - 1; i >= array.length - arrayLength; i--){
+            onlyTemp.push(data.value[i].value);
+            let localDate = data.value[i].date;
+            //Dubbelkollar att datan använder min tidszon
+            let dateTime = new Date(localDate);
+            const checkSwedishTime = dateTime.getTimezoneOffset() === -120;
+            let milliSec = dateTime.getTime();
+            const winterOrSummer = milliSec + (checkSwedishTime ? 7200000 : 3600000);
+            onlyDate.push(winterOrSummer);
+    }
+    console.log(onlyDate);
+    //let localDate = onlyDate;
+    //console.log(onlyTemp);
+    let xPoints = onlyDate.length;
+    console.log(xPoints);
+    //Lägger !chart då den krånglade utan
+    if(!chart){
+        chart = new ApexCharts(document.querySelector("#chart"), {
+            series: [{
+            name: 'Havstemperatur',
+            data: onlyTemp,
+        }],
+            chart: {
+            width: "100%",
+            type: 'area',
+            zoom:{
+                enabled: false
+            },
+            toolbar:{
+                show: false
+            },
+        },
+        title: {
+            text: `Senaste temperaturmätningarna`,
+            align: "center",
+            style:{
+                fontSize: "14px",
+                fontWeight: "600",
+                color: "#324c56",
+                fontFamily: "Verdana, Geneva, Tahoma, sans-serif"
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        stroke: {
+            curve: 'smooth'
+        },
+        xaxis: {
+            type: 'datetime',
+            categories: onlyDate
+        },
+        markers:{
+            size: 6,
+        },
+        tooltip: {
+            x: {
+            format: 'dd/MM/yy HH:mm'
+            },
+        }
+        });
+        chart.render();
+    }
+//Uppdaterar båda arrayerna vid byte av station (de hängde inte med och använde gammal data) 
+chart.updateSeries([{
+    data: onlyTemp,
+    categories: onlyDate
+}]);
+//Uppdaterar även diagrammets x-axel för att datan ska bli korrekt på sidan
+chart.updateOptions({
+    xaxis:{
+        categories: onlyDate,
+        tickAmount: onlyDate.length
+    },
+    title:{
+        text: `Senaste temperaturmätningarna`
+    }
+})
+}
+//Hämtar in nytt API som kollar våghöjder
+/**
+ * Funktion som hämtar våglängder från API på vald plats
+ * Anropar utskriftsfunktion med den hämtade datan
+ * @param {number} lat 
+ * @param {number} long 
+ */
+async function getWaveData(lat, long){
+    let url = `https://marine-api.open-meteo.com/v1/marine?latitude=${lat}&amp;longitude=${long}&amp;current=wave_height&amp;timezone=Europe%2FBerlin&amp;wind_speed_unit=ms`;
+     await fetch(url)
+    .then(response => 
+        response.json() // Omvandla till json
+    )
+    .then(data => {
+        console.log(data);
+        showWaveHeight(data);
+    })
+    .catch(error => {
+        console.error('Fel vid hämtning av våghöjder:', error);
+    });
+}
+/**
+ * Tar in data och skriver ut senaste våghöjden
+ * @param {object} currentWave 
+ */
+function showWaveHeight(currentWave){
+    let waveTime = currentWave.current.time;
+    let waveHeight = currentWave.current.wave_height;
+    let heightText = document.getElementById("height-text");
+    const time = new Date(waveTime);
+
+    let day = time.getDate();
+    let month = time.getMonth() + 1;
+    let hours = time.getHours();
+    let minutes = time.getMinutes();
+    if(hours &lt; 10){
+        hours = hours + "0";
+    }
+    if(minutes &lt; 10){
+        minutes = minutes + "0";
+    }
+
+    if(!waveHeight){
+        heightText.innerHTML= "Våghöjd saknas vid denna station";
+    }else{
+        heightText.innerHTML= `Våghöjd &lt;span id="height"> ${waveHeight}m&lt;/span> vid senaste mätningen (${hours}:${minutes}, ${day}/${month})`;
+    }
+}
+/**
+ * Funktion som hämtar vindhastighet från API på vald plats
+ * Anropar utskriftsfunktion
+ * @param {number} lat 
+ * @param {number} long 
+ */
+async function getWindData(lat, long){
+    let url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&amp;longitude=${long}&amp;current=wind_speed_10m&amp;timezone=Europe%2FBerlin&amp;wind_speed_unit=ms`;
+     await fetch(url)
+    .then(response => 
+        response.json() // Omvandla till json
+    )
+    .then(data => {
+        showWindSpeed(data);
+    })
+    .catch(error => {
+        console.error('Fel vid hämtning av vindhastighet:', error);
+    });
+}
+/**
+ * Skriver ut senaste vindhastigheten till webbsida
+ * @param {object} currentWindSpeed 
+ */
+function showWindSpeed(currentWindSpeed){
+    let windSpeedTime = currentWindSpeed.current.time;
+    let windSpeed = currentWindSpeed.current.wind_speed_10m;
+    let windText = document.getElementById("wind-text");
+
+    console.log(windSpeed);
+
+    const time = new Date(windSpeedTime);
+
+    let day = time.getDate();
+    let month = time.getMonth() + 1;
+    let hours = time.getHours();
+    let minutes = time.getMinutes();
+    if(hours &lt; 10){
+        hours = hours + "0";
+    }
+    if(minutes &lt; 10){
+        minutes = minutes + "0";
+    }
+
+    if(!windSpeed){
+        windText.innerHTML= "Vindhastighet saknas vid denna station";
+    }else{
+        windText.innerHTML= `Vindhastighet &lt;span id="height"> ${windSpeed}m/s&lt;/span> vid senaste mätningen &lt;br>(${hours}:${minutes}, ${day}/${month})`;
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#getStations">getStations</a></li><li><a href="global.html#getWaveData">getWaveData</a></li><li><a href="global.html#getWindData">getWindData</a></li><li><a href="global.html#initMap">initMap</a></li><li><a href="global.html#showChart">showChart</a></li><li><a href="global.html#showWater">showWater</a></li><li><a href="global.html#showWaveHeight">showWaveHeight</a></li><li><a href="global.html#showWindSpeed">showWindSpeed</a></li><li><a href="global.html#startMap">startMap</a></li><li><a href="global.html#tryUrl">tryUrl</a></li><li><a href="global.html#writeWaters">writeWaters</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.4</a> on Sat Mar 22 2025 16:11:00 GMT+0100 (Central European Standard Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
